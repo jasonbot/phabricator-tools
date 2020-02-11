@@ -7,9 +7,9 @@ import (
 
 // WhoAmI calls the conduit user.whoami method
 func WhoAmI() (entities.User, error) {
+	var user entities.User
 	connection, err := dialViaCmdLine()
 
-	var user entities.User
 	if err != nil {
 		return user, err
 	}

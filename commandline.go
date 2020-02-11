@@ -48,17 +48,15 @@ func (*commandLineClient) Call(method string, inputs interface{}, outputs interf
 	}
 
 	if jsonBody.String("error") != "" || jsonBody.String("errorMessage") != "" {
-		return fmt.Errorf("Error code: %v message :%v", jsonBody.String("error"), jsonBody.String("errorMessage"))
+		return fmt.Errorf("Error: %v message :%v", jsonBody.String("error"), jsonBody.String("errorMessage"))
 	}
 
 	resultBytes, err := jsonBody.ToBytes("response")
-
 	if err != nil {
 		return err
 	}
 
 	err = json.Unmarshal(resultBytes, outputs)
-
 	if err != nil {
 		return err
 	}
