@@ -28,13 +28,13 @@ func (*commandLineClient) Call(method string, inputs interface{}, outputs interf
 	if err != nil {
 		return err
 	}
+
 	_, err = stdin.Write(stdinContent)
 	if err != nil {
 		return err
 	}
 	stdin.Close()
 
-	//cmd.Start()
 	cmd.Wait()
 
 	commandOutput, err := cmd.Output()
