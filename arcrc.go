@@ -3,15 +3,11 @@ package phabricatortools
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"net/url"
 	"os"
 	"os/user"
 	"path"
-
-	"github.com/uber/gonduit"
-	"github.com/uber/gonduit/core"
 )
 
 type arcrc struct {
@@ -21,7 +17,7 @@ type arcrc struct {
 
 func readarcrc() (arcrc, error) {
 	user, _ := user.Current()
-	arcrcpath := path.Join(user.HomeDir, ".arc-cmdrc")
+	arcrcpath := path.Join(user.HomeDir, ".arcrc")
 	arcrcHandle, err := os.Open(arcrcpath)
 
 	if err != nil {
@@ -63,9 +59,10 @@ func getEndpointAndToken() (string, string, error) {
 		}
 	}
 
-	return "", "", errors.New("Couldn't find default in .arc-cmdrc")
+	return "", "", errors.New("Couldn't find default in .arcrc")
 }
 
+/*
 func dial() (*gonduit.Conn, error) {
 	endpoint, token, err := getEndpointAndToken()
 
@@ -82,3 +79,4 @@ func dial() (*gonduit.Conn, error) {
 		},
 	)
 }
+*/

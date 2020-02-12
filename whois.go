@@ -2,9 +2,18 @@ package phabricatortools
 
 import (
 	"errors"
-
-	"github.com/uber/gonduit/entities"
 )
+
+// User represents a user in the Phabricator system
+type User struct {
+	PHID     string   `json:"phid"`
+	UserName string   `json:"userName"`
+	RealName string   `json:"realName"`
+	Email    string   `json:"primaryEmail"`
+	Image    string   `json:"image"`
+	URI      string   `json:"uri"`
+	Roles    []string `json:"roles"`
+}
 
 type requestConstraints struct {
 	PHIDS []string `json:"phids"`
@@ -15,7 +24,7 @@ type whoisRequest struct {
 }
 
 type responseData struct {
-	entities.User `json:"fields"`
+	User `json:"fields"`
 }
 
 type whoisResponse struct {
@@ -23,8 +32,8 @@ type whoisResponse struct {
 }
 
 // WhoIs calls the conduit user.search method with a single user PHID
-func WhoIs(PHID string) (entities.User, error) {
-	var user entities.User
+func WhoIs(PHID string) (User, error) {
+	var user User
 	var response whoisResponse
 
 	if PHID == "" {

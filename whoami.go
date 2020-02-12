@@ -1,20 +1,17 @@
 package phabricatortools
 
-import (
-	"github.com/uber/gonduit/entities"
-	"github.com/uber/gonduit/requests"
-)
+type emptyRequest struct{}
 
 // WhoAmI calls the conduit user.whoami method
-func WhoAmI() (entities.User, error) {
-	var user entities.User
+func WhoAmI() (User, error) {
+	var user User
 	connection, err := dialViaCmdLine()
 
 	if err != nil {
 		return user, err
 	}
 
-	err = connection.Call("user.whoami", &requests.Request{}, &user)
+	err = connection.Call("user.whoami", &emptyRequest{}, &user)
 	if err != nil {
 		return user, err
 	}
