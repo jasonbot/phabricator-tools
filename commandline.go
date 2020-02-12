@@ -8,7 +8,7 @@ import (
 	"github.com/karlseguin/typed"
 )
 
-// CommandLineClient implements a very small subset of the gonduit Conn object's calls
+// CommandLineClient implements a very simple Call operator which shells out to `arc`.
 type CommandLineClient interface {
 	Call(method string, inputs interface{}, outputs interface{}) error
 }
