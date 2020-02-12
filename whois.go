@@ -4,33 +4,6 @@ import (
 	"errors"
 )
 
-// User represents a user in the Phabricator system
-type User struct {
-	PHID     string   `json:"phid"`
-	UserName string   `json:"userName"`
-	RealName string   `json:"realName"`
-	Email    string   `json:"primaryEmail"`
-	Image    string   `json:"image"`
-	URI      string   `json:"uri"`
-	Roles    []string `json:"roles"`
-}
-
-type requestConstraints struct {
-	PHIDS []string `json:"phids"`
-}
-
-type whoisRequest struct {
-	Constraints requestConstraints `json:"constraints"`
-}
-
-type responseData struct {
-	User `json:"fields"`
-}
-
-type whoisResponse struct {
-	Data []responseData `json:"data"`
-}
-
 // WhoIs calls the conduit user.search method with a single user PHID
 func WhoIs(PHID string) (User, error) {
 	var user User
@@ -46,7 +19,7 @@ func WhoIs(PHID string) (User, error) {
 		return user, err
 	}
 
-	err = connection.Call("user.search", &whoisRequest{Constraints: requestConstraints{PHIDS: []string{PHID}}}, &response)
+	err = connection.Call("user.search", &whoisRequest{Constraints: whoisRequestConstraints{PHIDS: []string{PHID}}}, &response)
 	if err != nil {
 		return user, err
 	}
