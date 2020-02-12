@@ -10,3 +10,4 @@ all: bin $(OUTFILES)
 
 clean:
 	rm -rf $(OUTFILES)
+	go mod tidy
