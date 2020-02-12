@@ -1,7 +1,5 @@
 package phabricatortools
 
-type emptyRequest struct{}
-
 // WhoAmI calls the conduit user.whoami method
 func WhoAmI() (User, error) {
 	var user User

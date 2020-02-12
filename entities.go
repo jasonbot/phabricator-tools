@@ -11,6 +11,16 @@ type User struct {
 	Roles    []string `json:"roles"`
 }
 
+// Status represents a maniphest/differential task status
+type Status struct {
+	Name    string `json:"name"`
+	Value   string `json:"value"`
+	Closed  bool   `json:"closed"`
+	Special string `"special",omitempty`
+}
+
+type emptyRequest struct{}
+
 type whoisRequestConstraints struct {
 	PHIDS []string `json:"phids"`
 }
@@ -25,4 +35,8 @@ type whoisResponseData struct {
 
 type whoisResponse struct {
 	Data []whoisResponseData `json:"data"`
+}
+
+type maniphestStatusSearchResponse struct {
+	Statuses []Status `json:"data"`
 }
