@@ -19,6 +19,7 @@ type commandLineClient struct {
 func (*commandLineClient) Call(method string, inputs interface{}, outputs interface{}) error {
 	cmd := exec.Command("arc", "call-conduit", method)
 
+	// We want to pipe in our request JSON via stdin
 	stdin, err := cmd.StdinPipe()
 	if err != nil {
 		return err
@@ -35,8 +36,10 @@ func (*commandLineClient) Call(method string, inputs interface{}, outputs interf
 	}
 	stdin.Close()
 
+	// Now wait for arc to run
 	cmd.Wait()
 
+	// Grab the JSON if the tool ran successfully
 	commandOutput, err := cmd.Output()
 	if err != nil {
 		return err
@@ -47,10 +50,12 @@ func (*commandLineClient) Call(method string, inputs interface{}, outputs interf
 		return err
 	}
 
+	// If the call resulted in an error, fail correctly
 	if jsonBody.String("error") != "" || jsonBody.String("errorMessage") != "" {
-		return fmt.Errorf("Error: %v message :%v", jsonBody.String("error"), jsonBody.String("errorMessage"))
+		return fmt.Errorf("Error calling %v: %v message :%v", method, jsonBody.String("error"), jsonBody.String("errorMessage"))
 	}
 
+	// Otherwise, treat response as whatever struct we got passed in to unmarshal to
 	resultBytes, err := jsonBody.ToBytes("response")
 	if err != nil {
 		return err
