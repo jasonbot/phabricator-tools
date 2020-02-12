@@ -21,6 +21,6 @@ func main() {
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 	} else {
-		fmt.Printf("User: %v (%v)\nEmail: %v\nURI: %v\nPicture: %v\nRoles: %v\n", user.RealName, user.UserName, user.Email, user.URI, user.Image, user.Roles)
+		fmt.Printf("%v (%v)\nRoles: %v\n", user.RealName, user.UserName, user.Roles)
 	}
 }
