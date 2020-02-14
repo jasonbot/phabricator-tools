@@ -1,18 +1,18 @@
 package main
 
 import (
-	"fmt"
-
 	phabricatortools "github.com/jasonbot/phabricator-tools"
+	"github.com/rivo/tview"
 )
 
 func main() {
 	_, err := phabricatortools.GetStatuses()
-
 	if err != nil {
-		fmt.Printf("Error: %v\n", err)
-		return
+		panic(err)
 	}
 
-	fmt.Println("Anchor polish")
+	box := tview.NewBox().SetBorder(true).SetTitle("Anchor Management")
+	if err := tview.NewApplication().SetRoot(box, true).Run(); err != nil {
+		panic(err)
+	}
 }

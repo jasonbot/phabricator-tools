@@ -18,15 +18,15 @@ Gonduit doesn't support all the modern methods (like `user.search`), and some of
 
 # Commands
 
-## `whoamiphab`
+## `phabwhoami`
 
 Returns your user's logged in PHID to stdout
 
-## `whoisphab`
+## `phabwhois`
 
 Returns some information about a user by PHID
 
-## `statusesphab`
+## `phabstatuses`
 
 Lists all possible maniphest/differential task statuses
 
