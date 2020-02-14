@@ -6,5 +6,5 @@ bin/%: cmd/%.go
 all: $(OUTFILES)
 
 clean:
-	rm -rf $(OUTFILES)
+	rm -rf $(OUTFILES) bin
 	go mod tidy
