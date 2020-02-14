@@ -42,7 +42,8 @@ func readarcrc() (arcrc, error) {
 	return arcrcData, nil
 }
 
-func getEndpointAndToken() (string, string, error) {
+// GetArcEndpointAndToken will return the user's cached API endpoint/token used with arcanist
+func GetArcEndpointAndToken() (string, string, error) {
 	rcdata, err := readarcrc()
 
 	if err != nil {
@@ -63,8 +64,9 @@ func getEndpointAndToken() (string, string, error) {
 }
 
 /*
+// Unfortunately this doesn't work at work, the phabricator instance always redirects to the Google SSO page
 func dial() (*gonduit.Conn, error) {
-	endpoint, token, err := getEndpointAndToken()
+	endpoint, token, err := GetArcEndpointAndToken()
 
 	if err != nil {
 		return nil, err
