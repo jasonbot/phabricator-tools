@@ -5,6 +5,16 @@ Phabricator is nice in how powerful it is, but much like other general purpose t
 
 I wish to solve that for myself.
 
+# Running
+
+Make sure Go 1.13+ is installed on your system. Then:
+
+```Makefile
+make
+
+./bin/<hit tab>
+```
+
 
 ## First problem
 
