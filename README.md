@@ -30,6 +30,10 @@ Returns some information about a user by PHID
 
 Lists all possible maniphest/differential task statuses
 
+## `phabtasks`
+
+Lists all your assigned open tasks
+
 ## `anchormanagement`
 
 Fast text-based UI for doing daily maniphest grooming

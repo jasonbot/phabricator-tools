@@ -12,7 +12,7 @@ func main() {
 		fmt.Printf("Error: %v\n", err)
 	} else {
 		for _, task := range tasks {
-			fmt.Printf("T%v Status: %v Name: %v\n", task.ID, task.Status.Value, task.Name)
+			fmt.Printf("T%v %-15s Name: %v\n", task.ID, task.Status.Value, task.Name)
 		}
 	}
 }
