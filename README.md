@@ -30,6 +30,6 @@ Returns some information about a user by PHID
 
 Lists all possible maniphest/differential task statuses
 
-## `anchorpolish`
+## `anchormanagement`
 
 Fast text-based UI for doing daily maniphest grooming
