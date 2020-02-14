@@ -11,8 +11,11 @@ func main() {
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 	} else {
+		statusmap, _ := phabricatortools.GetStatusMap()
+
 		for _, task := range tasks {
-			fmt.Printf("T%v %-15s Name: %v\n", task.ID, task.Status.Value, task.Name)
+			statusName, _ := statusmap[task.Status.Value]
+			fmt.Printf("T%v | %-15s | %v\n", task.ID, statusName.Name, task.Name)
 		}
 	}
 }
