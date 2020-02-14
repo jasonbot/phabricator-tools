@@ -1,18 +1,32 @@
 package main
 
 import (
+	"fmt"
+
 	phabricatortools "github.com/jasonbot/phabricator-tools"
 	"github.com/rivo/tview"
 )
 
 func main() {
-	_, err := phabricatortools.GetStatuses()
+	statuses, err := phabricatortools.GetStatusMap()
 	if err != nil {
 		panic(err)
 	}
 
-	box := tview.NewBox().SetBorder(true).SetTitle("Anchor Management")
-	if err := tview.NewApplication().SetRoot(box, true).Run(); err != nil {
+	tasks, err := phabricatortools.GetMyOpenTasks()
+	if err != nil {
+		panic(err)
+	}
+
+	table := tview.NewTable().SetBorders(true)
+
+	for row, task := range tasks {
+		table.SetCell(row, 1, tview.NewTableCell(fmt.Sprintf("T%v", task.ID)))
+		table.SetCell(row, 0, tview.NewTableCell(statuses[task.Status.Value].Name))
+		table.SetCell(row, 2, tview.NewTableCell(task.Name))
+	}
+
+	if err := tview.NewApplication().SetRoot(table, true).Run(); err != nil {
 		panic(err)
 	}
 }

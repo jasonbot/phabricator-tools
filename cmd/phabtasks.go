@@ -15,7 +15,7 @@ func main() {
 
 		for _, task := range tasks {
 			statusName := statusmap[task.Status.Value]
-			fmt.Printf("T%v | %-15s | %v\n", task.ID, statusName.Name, task.Name)
+			fmt.Printf("T%v | %-15s | %v\n", task.PHID, statusName.Name, task.Name)
 		}
 	}
 }
