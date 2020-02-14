@@ -14,7 +14,7 @@ func main() {
 		statusmap, _ := phabricatortools.GetStatusMap()
 
 		for _, task := range tasks {
-			statusName, _ := statusmap[task.Status.Value]
+			statusName := statusmap[task.Status.Value]
 			fmt.Printf("T%v | %-15s | %v\n", task.ID, statusName.Name, task.Name)
 		}
 	}
