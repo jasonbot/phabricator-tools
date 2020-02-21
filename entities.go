@@ -16,7 +16,7 @@ type Status struct {
 	Name    string `json:"name"`
 	Value   string `json:"value"`
 	Closed  bool   `json:"closed"`
-	Special string `"special,omitempty"`
+	Special string `json:"special,omitempty"`
 	Color   string `json:"color,omitempty"`
 }
 
