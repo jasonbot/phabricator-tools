@@ -44,6 +44,14 @@ Lists all possible maniphest/differential task statuses
 
 Lists all your assigned open tasks
 
+## `phabrepos`
+
+Lists all diffusion repositories and their clone URLs
+
+## `phabgrab`
+
+Clones/updates _every_ repo in phab locally
+
 ## `anchormanagement`
 
 Fast text-based UI for doing daily maniphest grooming

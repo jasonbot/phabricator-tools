@@ -36,7 +36,7 @@ func (*commandLineClient) Call(method string, inputs interface{}, outputs interf
 	}
 	stdin.Close()
 
-	fmt.Printf("Sending: %v\n", string(stdinContent))
+	//fmt.Printf("Sending: %v\n", string(stdinContent))
 
 	// Now wait for arc to run
 	cmd.Wait()
@@ -46,7 +46,7 @@ func (*commandLineClient) Call(method string, inputs interface{}, outputs interf
 	if err != nil {
 		return err
 	}
-	fmt.Printf("Getting: %v\n", string(commandOutput))
+	//fmt.Printf("Getting: %v\n", string(commandOutput))
 
 	jsonBody, err := typed.Json(commandOutput)
 	if err != nil {
