@@ -95,3 +95,64 @@ type maniphestTaskSearchResults struct {
 	Data []maniphestTaskSearchData `json:"data"`
 	cursoredRequest
 }
+
+type diffusionRepositorySearchAttachments map[string]bool
+
+type diffusionRepositorySearch struct {
+	Attachments diffusionRepositorySearchAttachments `json:"attachments"`
+	cursoredRequest
+}
+
+// DiffusionRepositoryFields holds basic information about a repository
+type DiffusionRepositoryFields struct {
+	Name          string `json:"name"`
+	VCS           string `json:"vcs"`
+	Callsign      string `json:"callsign"`
+	ShortName     string `json:"shortName"`
+	DefaultBranch string `json:"defaultBranch"`
+}
+
+// DiffusionRepoURI holds the clone URIs for the repo
+type DiffusionRepoURI struct {
+	Raw       string `json:"raw"`
+	Effective string `json:"effective"`
+}
+
+// DiffusionRepoBuiltin holds what this URI is for
+type DiffusionRepoBuiltin struct {
+	Protocol   string `json:"protocol"`
+	Identifier string `json:"identifier"`
+}
+
+// DiffusionURIFields holds the actual URI info
+type DiffusionURIFields struct {
+	URI     DiffusionRepoURI     `json:"uri"`
+	Builtin DiffusionRepoBuiltin `json:"builtin"`
+}
+
+// DiffusionURI is the actual URI object, doubly nested for some reason
+type DiffusionURI struct {
+	Fields DiffusionURIFields `json:"fields"`
+}
+
+// DiffusionURIsAttachments is because the JSON struct is way too deep
+type DiffusionURIsAttachments struct {
+	URIs []DiffusionURI `json:"uris"`
+}
+
+// DiffusionAttachments holds the requested attachments
+type DiffusionAttachments struct {
+	URIs DiffusionURIsAttachments `json:"uris"`
+}
+
+// DiffusionRepository represents a repository
+type DiffusionRepository struct {
+	ID          uint64                    `json:"id"`
+	Fields      DiffusionRepositoryFields `json:"fields"`
+	Attachments DiffusionAttachments      `json:"attachments"`
+}
+
+type diffusionRepositorySearchResult struct {
+	Data  []DiffusionRepository `json:"data"`
+	After cursoredRequest       `json:"cursor"`
+}
