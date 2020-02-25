@@ -10,19 +10,21 @@ func GetRepositories() ([]DiffusionRepository, error) {
 
 	first := true
 	request := diffusionRepositorySearch{Attachments: map[string]bool{"uris": true}}
-	searchResponse := diffusionRepositorySearchResult{}
 	results := []DiffusionRepository{}
+	after := ""
 
-	for first || searchResponse.Cursor.After != request.After {
+	for first || after != "" {
+		searchResponse := diffusionRepositorySearchResult{}
 
-		if !first && searchResponse.Cursor.After != "" {
-			request.After = searchResponse.Cursor.After
+		if !first {
+			request.After = after
 		}
 
 		err := connection.Call("diffusion.repository.search", &request, &searchResponse)
 		if err != nil {
 			return nil, err
 		}
+		after = searchResponse.Cursor.After
 
 		results = append(results, searchResponse.Data...)
 		first = false

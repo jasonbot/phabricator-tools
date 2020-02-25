@@ -11,9 +11,10 @@ import (
 )
 
 type repoInfo struct {
-	Callsign string
-	URI      string
-	Master   string
+	ShortName string
+	Callsign  string
+	URI       string
+	Master    string
 }
 
 func cloneRepo(filePath string, repoToFetch repoInfo) {
@@ -23,7 +24,12 @@ func cloneRepo(filePath string, repoToFetch repoInfo) {
 	err := cmd.Run()
 
 	if err != nil {
-		fmt.Println(err)
+		output, _ := cmd.CombinedOutput()
+		if len(output) > 0 {
+			fmt.Println(string(output))
+			fmt.Println("---")
+		}
+		fmt.Printf("Error cloning %v: %v\n", repoToFetch.Callsign, err)
 	}
 }
 
@@ -35,15 +41,26 @@ func updateRepo(filePath string, repoToFetch repoInfo) {
 	err := cmd.Run()
 
 	if err != nil {
-		fmt.Println(err)
+		output, _ := cmd.CombinedOutput()
+		if len(output) > 0 {
+			fmt.Println(string(output))
+			fmt.Println("---")
+		}
+		fmt.Printf("Error updating %v: %v\n", repoToFetch.Callsign, err)
 	}
 }
 
-func fetchRepo(repoToFetch repoInfo, updateOnly bool) {
+func fetchRepo(repoToFetch repoInfo, useShortname bool, updateOnly bool) {
 	directoryName := "./r" + repoToFetch.Callsign
+	if useShortname == true {
+		directoryName = "./" + repoToFetch.ShortName
+	}
+
 	if _, err := os.Stat(directoryName); os.IsNotExist(err) {
 		if !updateOnly {
 			cloneRepo(directoryName, repoToFetch)
+		} else {
+			fmt.Printf("Skipping %v\n", repoToFetch.Callsign)
 		}
 	} else {
 		updateRepo(directoryName, repoToFetch)
@@ -52,7 +69,11 @@ func fetchRepo(repoToFetch repoInfo, updateOnly bool) {
 
 func main() {
 	updateOnly := false
+	useShortname := false
+	workers := uint(4)
+	flag.UintVar(&workers, "workers", 4, "number of workers to run in parallel")
 	flag.BoolVar(&updateOnly, "updateonly", false, "only update existing repos on disk")
+	flag.BoolVar(&useShortname, "useshortname", false, "use short name instead of call name for folder name")
 	flag.Parse()
 
 	repositories, err := phabricatortools.GetRepositories()
@@ -64,13 +85,13 @@ func main() {
 		repoPipeline := make(chan repoInfo)
 		var done sync.WaitGroup
 
-		for index := 1; index < 8; index++ {
+		for index := uint(0); index < workers; index++ {
 			done.Add(1)
 			go func() {
 				defer done.Done()
 
 				for item := range repoPipeline {
-					fetchRepo(item, updateOnly)
+					fetchRepo(item, useShortname, updateOnly)
 				}
 			}()
 		}
@@ -78,7 +99,7 @@ func main() {
 		for _, repo := range repositories {
 			for _, URI := range repo.Attachments.URIs.URIs {
 				if URI.Fields.Builtin.Identifier == "callsign" {
-					repoPipeline <- repoInfo{Callsign: repo.Fields.Callsign, URI: URI.Fields.URI.Effective, Master: repo.Fields.DefaultBranch}
+					repoPipeline <- repoInfo{ShortName: repo.Fields.ShortName, Callsign: repo.Fields.Callsign, URI: URI.Fields.URI.Effective, Master: repo.Fields.DefaultBranch}
 				}
 			}
 		}
