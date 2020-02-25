@@ -100,7 +100,15 @@ func main() {
 
 		for _, repo := range repositories {
 			for _, URI := range repo.Attachments.URIs.URIs {
-				if URI.Fields.Builtin.Identifier == "callsign" {
+				uriTypeMatch := false
+
+				if useShortname && URI.Fields.Builtin.Identifier == "shortname" {
+					uriTypeMatch = true
+				} else if !useShortname && URI.Fields.Builtin.Identifier == "callsign" {
+					uriTypeMatch = true
+				}
+
+				if uriTypeMatch {
 					matched := false
 
 					if repoName == "" {
