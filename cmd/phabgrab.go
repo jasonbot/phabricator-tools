@@ -6,7 +6,7 @@ import (
 	"os/exec"
 	"sync"
 
-	phabricatortools "github.com/jasonbot/phabricator-tools"
+	phabricatortools "github.com/jasonbot/phabricator-tools/v1"
 )
 
 type repoInfo struct {

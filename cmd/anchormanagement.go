@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	phabricatortools "github.com/jasonbot/phabricator-tools"
+	phabricatortools "github.com/jasonbot/phabricator-tools/v1"
 	"github.com/rivo/tview"
 )
 

@@ -4,7 +4,7 @@ import (
 	"flag"
 	"fmt"
 
-	phabricatortools "github.com/jasonbot/phabricator-tools"
+	phabricatortools "github.com/jasonbot/phabricator-tools/v1"
 )
 
 func main() {
