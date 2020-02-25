@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"os/exec"
@@ -38,23 +39,29 @@ func updateRepo(filePath string, repoToFetch repoInfo) {
 	}
 }
 
-func fetchRepo(repoToFetch repoInfo) {
+func fetchRepo(repoToFetch repoInfo, updateOnly bool) {
 	directoryName := "./r" + repoToFetch.Callsign
 	if _, err := os.Stat(directoryName); os.IsNotExist(err) {
-		cloneRepo(directoryName, repoToFetch)
+		if !updateOnly {
+			cloneRepo(directoryName, repoToFetch)
+		}
 	} else {
 		updateRepo(directoryName, repoToFetch)
 	}
 }
 
 func main() {
-	repositories, err := phabricatortools.GetRepositories()
+	updateOnly := false
+	flag.BoolVar(&updateOnly, "updateonly", false, "only update existing repos on disk")
+	flag.Parse()
 
-	repoPipeline := make(chan repoInfo)
+	repositories, err := phabricatortools.GetRepositories()
 
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 	} else {
+
+		repoPipeline := make(chan repoInfo)
 		var done sync.WaitGroup
 
 		for index := 1; index < 8; index++ {
@@ -63,7 +70,7 @@ func main() {
 				defer done.Done()
 
 				for item := range repoPipeline {
-					fetchRepo(item)
+					fetchRepo(item, updateOnly)
 				}
 			}()
 		}

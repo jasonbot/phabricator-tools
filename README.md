@@ -18,13 +18,13 @@ make
 
 ## First problem
 
-I can't directly use the conduit endpoint via conduit; every time I hit it, it returns HTML trying to redirect my client to a SSO Google auth page.
+I can't directly use the conduit endpoint via the gonduit library; every time I hit it, it returns HTML trying to redirect my client to a SSO Google auth page.
 
-So! Let's call the `arc call-conduit` command ourselves, it takes JSON in and out. And we can still use all the types provided in gonduit, _aaaand_ it automatically pulls and handles the `.arcrc` so if `arc` is set up then this just works too.
+So! Let's call the `arc call-conduit` command ourselves, it takes JSON in and out. We can still use all the types provided in gonduit, _aaaand_ it automatically pulls and handles the `.arcrc` so if `arc` is set up then this just works too.
 
 ## Second problortunity
 
-Gonduit doesn't support all the modern methods (like `user.search`), and some of tghe entities don 't use the right named fields for the installation at work (looking at you, `User`) so I can just drop gonduit altogether at this point.
+Gonduit doesn't support all the modern methods (like `user.search`), and some of the entities don't use the right named fields for the installation at work (looking at you, `User`) so I can just drop dependency on gonduit altogether at this point.
 
 # Commands
 
