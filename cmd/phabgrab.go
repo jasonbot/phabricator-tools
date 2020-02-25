@@ -71,9 +71,11 @@ func main() {
 	updateOnly := false
 	useShortname := false
 	workers := uint(4)
+	repoName := ""
 	flag.UintVar(&workers, "workers", 4, "number of workers to run in parallel")
 	flag.BoolVar(&updateOnly, "updateonly", false, "only update existing repos on disk")
-	flag.BoolVar(&useShortname, "useshortname", false, "use short name instead of call name for folder name")
+	flag.BoolVar(&useShortname, "useshortname", false, "use short name instead of callsign for folder name and matching")
+	flag.StringVar(&repoName, "repo", "", "the repo to clone (by default, will download all)")
 	flag.Parse()
 
 	repositories, err := phabricatortools.GetRepositories()
@@ -99,7 +101,21 @@ func main() {
 		for _, repo := range repositories {
 			for _, URI := range repo.Attachments.URIs.URIs {
 				if URI.Fields.Builtin.Identifier == "callsign" {
-					repoPipeline <- repoInfo{ShortName: repo.Fields.ShortName, Callsign: repo.Fields.Callsign, URI: URI.Fields.URI.Effective, Master: repo.Fields.DefaultBranch}
+					matched := false
+
+					if repoName == "" {
+						matched = true
+					} else {
+						if useShortname == true && repoName == repo.Fields.ShortName {
+							matched = true
+						} else if useShortname == false && repoName == "r"+repo.Fields.Callsign {
+							matched = true
+						}
+					}
+
+					if matched == true {
+						repoPipeline <- repoInfo{ShortName: repo.Fields.ShortName, Callsign: repo.Fields.Callsign, URI: URI.Fields.URI.Effective, Master: repo.Fields.DefaultBranch}
+					}
 				}
 			}
 		}
