@@ -15,13 +15,13 @@ func GetRepositories() ([]DiffusionRepository, error) {
 
 	for first || searchResponse.After.After != request.After {
 
+		if !first && searchResponse.After.After != "" {
+			request.After = searchResponse.After.After
+		}
+
 		err := connection.Call("diffusion.repository.search", &request, &searchResponse)
 		if err != nil {
 			return nil, err
-		}
-
-		if searchResponse.After.After != "" {
-			request.After = searchResponse.After.After
 		}
 
 		results = append(results, searchResponse.Data...)
