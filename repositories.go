@@ -13,10 +13,10 @@ func GetRepositories() ([]DiffusionRepository, error) {
 	searchResponse := diffusionRepositorySearchResult{}
 	results := []DiffusionRepository{}
 
-	for first || searchResponse.After.After != request.After {
+	for first || searchResponse.Cursor.After != request.After {
 
-		if !first && searchResponse.After.After != "" {
-			request.After = searchResponse.After.After
+		if !first && searchResponse.Cursor.After != "" {
+			request.After = searchResponse.Cursor.After
 		}
 
 		err := connection.Call("diffusion.repository.search", &request, &searchResponse)

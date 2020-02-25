@@ -153,6 +153,6 @@ type DiffusionRepository struct {
 }
 
 type diffusionRepositorySearchResult struct {
-	Data  []DiffusionRepository `json:"data"`
-	After cursoredRequest       `json:"cursor"`
+	Data   []DiffusionRepository `json:"data"`
+	Cursor cursoredRequest       `json:"cursor"`
 }
