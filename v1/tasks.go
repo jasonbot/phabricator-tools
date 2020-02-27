@@ -9,9 +9,9 @@ func GetMyOpenTasks() ([]Task, error) {
 	}
 
 	searchParams := maniphestTaskSearch{}
-	searchResponse := maniphestTaskSearchResults{Data: []maniphestTaskSearchData{}}
 	var first = true
 	var tasks = []Task{}
+	after := ""
 
 	user, err := WhoAmI()
 	if err != nil {
@@ -20,15 +20,17 @@ func GetMyOpenTasks() ([]Task, error) {
 
 	searchParams.Constraints.Assigned = []string{user.PHID}
 
-	for first || searchResponse.After != "" {
+	for first || after != "" {
+		searchResponse := maniphestTaskSearchResults{Data: []maniphestTaskSearchData{}}
+
 		err := connection.Call("maniphest.search", &searchParams, &searchResponse)
 		if err != nil {
 			return nil, err
 		}
 
 		first = false
-		if searchResponse.After != "" {
-			searchParams.After = searchResponse.After
+		if after != "" {
+			searchParams.After = after
 		}
 
 		for _, task := range searchResponse.Data {
@@ -39,6 +41,8 @@ func GetMyOpenTasks() ([]Task, error) {
 				tasks = append(tasks, thisTask)
 			}
 		}
+
+		after = searchResponse.After
 
 	}
 
