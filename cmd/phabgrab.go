@@ -122,7 +122,12 @@ func main() {
 					}
 
 					if matched == true {
-						repoPipeline <- repoInfo{ShortName: repo.Fields.ShortName, Callsign: repo.Fields.Callsign, URI: URI.Fields.URI.Effective, Master: repo.Fields.DefaultBranch}
+						repoPipeline <- repoInfo{
+							ShortName: repo.Fields.ShortName,
+							Callsign:  repo.Fields.Callsign,
+							URI:       URI.Fields.URI.Effective,
+							Master:    repo.Fields.DefaultBranch,
+						}
 					}
 				}
 			}
