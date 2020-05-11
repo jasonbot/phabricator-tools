@@ -26,6 +26,10 @@ So! Let's call the `arc call-conduit` command ourselves, it takes JSON in and ou
 
 Gonduit doesn't support all the modern methods (like `user.search`), and some of the entities don't use the right named fields for the installation at work (looking at you, `User`) so I can just drop dependency on gonduit altogether at this point.
 
+## Thanks, Phabricator
+
+Phabricator shipped a breaking change recently: https://secure.phabricator.com/T13491 -- this has been fixed in this codebase now.
+
 # Commands
 
 ## `phabwhoami`
