@@ -17,7 +17,7 @@ type commandLineClient struct {
 }
 
 func (*commandLineClient) Call(method string, inputs interface{}, outputs interface{}) error {
-	cmd := exec.Command("arc", "call-conduit", method)
+	cmd := exec.Command("arc", "call-conduit", method, "--")
 
 	// We want to pipe in our request JSON via stdin
 	stdin, err := cmd.StdinPipe()
